@@ -1,0 +1,51 @@
+backpack = []  # рюкзак
+total_weight = 0  # общий вес в рюкзаке
+initial_survival_points = 15  # изначальное количество очков
+max_backpack = 8  # максимальный размер рюкзака (2*4)
+total_survival_points = initial_survival_points  # Изначальное количество очков выживания
+inventory = [['empty' for _ in range(4)] for _ in range(2)]  # инвентарь
+
+items = [
+    ('r', 3, 25),
+    ('p', 2, 15),
+    ('a', 2, 15),
+    ('m', 2, 20),
+    ('i', 1, 5),
+    ('k', 1, 15),
+    ('x', 3, 20),
+    ('t', 1, 25),
+    ('f', 1, 15),
+    ('d', 1, 10),
+    ('s', 2, 20),
+    ('c', 2, 20)
+]
+
+# Сортируем предметы
+sorted_items = sorted(items, key=lambda x: x[2] / x[1], reverse=True)
+
+# добавляем предметы
+for item in sorted_items:
+    if total_weight + item[1] <= max_backpack:
+        backpack.append(item)
+        total_weight += item[1]
+        total_survival_points += item[2]
+ # Уменьшаем очки за не добавленный предмет
+for item in sorted_items:
+    if item not in backpack and total_weight + item[1] > max_backpack:
+        total_survival_points -= item[2]
+
+# Заполняем инвентарь
+for j in range(len(backpack)):
+    x = j // 4
+    y = j % 4
+    inventory[x][y] = backpack[j][0]
+
+
+
+if total_survival_points > 0:
+    print('Итоговый инвентарь (2*4):')
+    for row in inventory:
+        print(row)
+    print(f'Итоговые очки выживания: {total_survival_points}')
+else:
+    print('Итоговое количество очков отрицательное')
